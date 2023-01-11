@@ -120,3 +120,58 @@ resource "azurerm_linux_virtual_machine" "test" {
 
 }
 
+resource "azurerm_virtual_machine" "test2" {
+  name                  = "Ahmed2"
+  location              = var.location
+  resource_group_name   = azurerm_resource_group.test.name
+  network_interface_ids = ["${azurerm_network_interface.test2.id}"]
+  vm_size               = "Standard_A0"
+
+  storage_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Nano-Server-Technical-Preview"
+    version   = "latest"
+  }
+
+  storage_os_disk {
+    name          = "disk2"
+    vhd_uri       = "${azurerm_storage_account.test.primary_blob_endpoint}${azurerm_storage_container.test.name}/myosdisk2.vhd"
+    caching       = "ReadWrite"
+    create_option = "FromImage"
+  }
+
+  os_profile {
+    computer_name  = "PC2"
+    admin_username = var.username
+    admin_password = var.password
+  }
+}
+
+resource "azurerm_virtual_machine" "test3" {
+  name                  = "stockag3"
+  location              = var.location
+  resource_group_name   = azurerm_resource_group.test.name
+  network_interface_ids = ["${azurerm_network_interface.test3.id}"]
+  vm_size               = "Standard_A1"
+
+  storage_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Nano-Server-Technical-Preview"
+    version   = "latest"
+  }
+
+  storage_os_disk {
+    name          = "Storage3"
+    vhd_uri       = "${azurerm_storage_account.test.primary_blob_endpoint}${azurerm_storage_container.test.name}/myosdisk3.vhd"
+    caching       = "ReadWrite"
+    create_option = "FromImage"
+  }
+
+  os_profile {
+    computer_name  = "pc3"
+    admin_username = var.username
+    admin_password = var.password
+  }
+}
